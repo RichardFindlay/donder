@@ -83,7 +83,6 @@ def user_profile(request, *args, **kwargs):
 # Create your views here.
 def landing_page(request, *args, **kwargs):
     # set default data
-    print('HERE_HERE_HERE_landing')
     mountainlist = mountain.objects.all()
     filter_by = request.GET.get('filter_by', 'all')
     order_by = request.GET.get('order_by', 'ascents')
@@ -234,6 +233,8 @@ def landing_page(request, *args, **kwargs):
         context['stripe_user_auth'] = stripe_user_auth
 
     context['form'] = form
+
+    print('HERE_HERE_HERE_landing')
 
     return render(request, "landing_page.html", context)
 
