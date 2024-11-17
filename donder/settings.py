@@ -35,7 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 if ENVIRONMENT == 'development':
     DEBUG = True
 else:
-    DEBUG = False
+    DEBUG = True
 
 # ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139']
 # ALLOWED_HOSTS = ['']
@@ -221,7 +221,7 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'no-cache'  # or 'max-age=0'
 }
 
-if DEBUG == True:
+if ENVIRONMENT == 'development':
     STATIC_URL = 'static/'
     STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..', 'static'),
