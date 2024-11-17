@@ -230,7 +230,10 @@ if ENVIRONMENT == 'development':
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 else:
-
+    STATIC_URL = ''
+    STATICFILES_DIRS = ''
+    MEDIA_URL = ''
+    MEDIA_ROOT = ''
     # # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     # S3_BUCKET_NAME = env('S3_BUCKET_NAME')
     # STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
