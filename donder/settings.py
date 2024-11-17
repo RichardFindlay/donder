@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
-import dj_database_url
 from environ import Env 
 from pathlib import Path
 
