@@ -1,1 +1,1 @@
-web : gunicorn donder.wsgi
+web : gunicorn donder.wsgi --timeout 120
