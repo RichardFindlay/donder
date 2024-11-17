@@ -1,0 +1,6 @@
+User-Agent: Googlebot
+User-Agent: Bingbot
+
+Allow: *
+
+Sitemap: https://www.donder.co.uk/sitemap.xml

@@ -1,0 +1,81 @@
+{% load static %}
+{% load templatetaghelpers %}
+<!DOCTYPE html>
+<html>
+<div class="modal-content-edit-profile text-center">
+<h3 class ="modal-title-journal mb-0 pb-0 mt-3" style="text-align: center; font-size:0.9em; font-weight: 500; display: block; line-height: 0.9em; margin-bottom:-8px !important">{{ jounral_entry.mountain_name }}</h3>
+<span class ="modal-date-climbed text-muted mb-0 pb-0 mt-0 text-center" style="text-align: center !important; font-size:0.55em; font-weight: 200; line-height: 0em;">{{ jounral_entry.date_climbed|date:'l, jS F, Y'|capfirst }}</span>
+<hr style ="margin-top: 0; margin-bottom: 10px ;"/>   
+    
+<!-- information div -->
+<div class="information-div info-community mt-0 mb-0 pt-0">
+    <img src="{% static 'img/information-div/icons8-place-marker-50.png' %}" alt="Icon of location pin"/>
+    <span class= "information-div-text text-muted info-region-text info-element" >{{ jounral_entry.mountain_fk.region }}</span>
+
+    <img src="{% static 'img/information-div/icons8-mountain-50.png' %}" alt="Icon of mountain used to symbolise the number of ascents made by users"/>
+    <span class= "information-div-text text-muted info-element">{{ mountain_ascends_count|get_ascend_count:jounral_entry.mountain_fk.name}}<br/>Ascents</span>
+
+    <img src="{% static 'img/information-div/icons8-resize-vertical-50.png' %}" style="height:80%" alt="Icon of vertical, double ended, arrow to symbolise height of mountain"/>
+    <span class= "information-div-text text-muted info-element">{{ jounral_entry.mountain_fk.height_meters }}<br/>Meters</span>
+
+    {% for class_ele in journal_mountain_objs|returnclassifications:jounral_entry.mountain_name|split:" " %}
+        <div class="information-div-ele info-element">
+        {% if class_ele %}<button class="cat-filter-journal-entry">{{ class_ele }}</button>{% endif %}
+        </div>
+    {% endfor %}
+
+</div>
+<div id="jcommunity-map-{{ jounral_entry.id }}" style="position: relative; top: 0; bottom: 0; height: 300px; width: 100%; border-radius: 16px; margin-top:7px"></div>
+<!-- status update -->
+<div name="caption" style="font-size: 0.6em; width:100%; border: none; resize: none; margin-top: 20px; margin-bottom: 50px; text-align:left" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>{{ jounral_entry.caption }}</div>
+<!-- image gallery -->
+<div class="media-scroller">
+    {% for img in post_images|filterpostimages:jounral_entry %}
+    <div class="media-element">
+    <img src="{{ img.image.url }}" alt="uploaded journal image from user's hike">
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+
+<script type='text/javascript'>
+
+  // load map for current journal entry 
+  mapboxgl.accessToken = 'pk.eyJ1IjoicmZpbmRsYXkiLCJhIjoiY2t4N3NtMmlqMzYxbzJ2cDhybGN5a210eCJ9.EdLcO474UjPD1AZWZ5nWLw';
+    var map = new mapboxgl.Map({
+    container: 'jcommunity-map-' + "{{ jounral_entry.id }}", // container ID
+    // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+    style: 'mapbox://styles/rfindlay/clf8uclhd009s01mx7jaqmx5s', // style URL
+    center: [ "{{ journal_mountain_objs|returnlongitude:jounral_entry.mountain_name }}", "{{ journal_mountain_objs|returnlatitude:jounral_entry.mountain_name }}"], // starting position [lng, lat]
+    zoom: 13 // starting zoom
+  });
+
+  // apply some width formatting to info-div if there are alot of elements - preventing div from being cut-off
+  var modalId = "myModal-" + "{{ jounral_entry.id }}"; 
+  var modal = document.getElementById(modalId);
+
+  var infoDivs = modal.querySelectorAll('.info-element');
+  var numInfoDivs = infoDivs.length;
+  var infoDiv = modal.querySelector('.information-div');
+
+  // get the number of characters in the info-text to see if width too long
+  var info_text_region = modal.querySelector('.info-region-text'); 
+  var content = info_text_region.innerHTML;
+  var numChars = content.length;
+
+  if (parseInt(numInfoDivs) >= 6 && numChars > 25) {
+    infoDiv.style.justifyContent = "flex-start";
+  } else {
+    infoDiv.style.justifyContent = "center";
+  }
+
+  // scroll to top to ensure post is in view
+  var section = document.getElementById("myModal-{{ jounral_entry.id }}");
+  section.scrollIntoView({behavior: "smooth"});
+
+
+</script>
+
+
+</html>

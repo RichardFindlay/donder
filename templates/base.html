@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+      <title>{% block title %}{% endblock %}</title>
+      {% block metatag %} {% endblock metatag %}
+      <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛰️</text></svg>"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/master.css' %}" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/autocomplete-input.css' %}" />
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+        </style>
+        <script src="{% static 'js/site-details-modal.js' %}"></script> 
+        <script src="{% static 'js/terms-and-conditions-modal.js' %}"></script> 
+
+        <script>
+            $(document).ready(function() {
+            $(document).on('click', '.mountain-link', function(event) {
+                var link = $(this);
+                var name = link.data('name');
+                var latitude = link.data('latitude');
+                var longitude = link.data('longitude');
+                site_info(event, name, latitude, longitude)
+            });
+            });
+        </script>
+
+        <script>
+          $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip(); 
+          });
+      </script>
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-6E4TV7RZRE"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-6E4TV7RZRE');
+      </script>
+
+      <!-- icons for tab and mobile -->
+      <link rel="apple-touch-icon" sizes="57x57" href="{% static 'favicon/apple-touch-icon-57x57.png' %}">
+      <link rel="apple-touch-icon" sizes="60x60" href="{% static 'favicon/apple-touch-icon-60x60.png' %}">
+      <link rel="apple-touch-icon" sizes="72x72" href="{% static 'favicon/apple-touch-icon-72x72.png' %}">
+      <link rel="apple-touch-icon" sizes="76x76" href="{% static 'favicon/apple-touch-icon-76x76.png' %}">
+      <link rel="apple-touch-icon" sizes="114x114" href="{% static 'favicon/apple-touch-icon-114x114.png' %}">
+      <link rel="apple-touch-icon" sizes="120x120" href="{% static 'favicon/apple-touch-icon-120x120.png' %}">
+      <link rel="apple-touch-icon" sizes="144x144" href="{% static 'favicon/apple-touch-icon-144x144.png' %}">
+      <link rel="apple-touch-icon" sizes="152x152" href="{% static 'favicon/apple-touch-icon-152x152.png' %}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon-180x180.png' %}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+      <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+      <!-- <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#5bbad5"> -->
+      <link rel="shortcut icon" href="https://www.donder.co.uk/donder-search-icon">
+      <meta name="apple-mobile-web-app-title" content="Donder">
+      <meta name="application-name" content="Donder">
+      <meta name="msapplication-TileColor" content="#00aba9">
+      <meta name="msapplication-config" content="{% static 'favicon/browserconfig.xml' %}">
+      <meta name="theme-color" content="#ffffff">
+
+      <!-- Open Graph / Facebook -->
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://www.donder.co.uk">
+      <!-- <meta property="og:title" content="Your Personal Hill Walking & Hiking Tracker"> -->
+      <!-- <meta property="og:description" content="The ultimate hiking & hill walking tracker for bagging peaks all over the UK & Ireland. From Munros to Wainwrights, Donder has you covered. Sign Up Today!"> -->
+      <meta property="og:image" content="https://donderstaticmedia.s3.eu-west-1.amazonaws.com/static/img/social-media-thumbnail.webp">
+
+      <!-- Twitter -->
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:url" content="https://www.donder.co.uk">
+      <meta name="twitter:title" content="Your Personal Hill Walking and Hiking Journal">
+      <meta name="twitter:description" content="The ultimate hill walking and hiking journal helping you to keep track of all your hikes from all over the UK & Ireland. From Munros to Wainwrights, Donder has you covered. Sign Up Today!">
+      <meta name="twitter:image:src" content="https://donderstaticmedia.s3.eu-west-1.amazonaws.com/static/img/social-media-thumbnail.webp">
+
+    </head>
+    <body>
+      <!-- Navigation Bar -->
+      <nav class="navbar bg-* ml-0 pl-0 pr-0 d-flex" id="mainNav">
+          <h2 class="navbar-brand main-heading-text" style="margin-left:1.5rem;"><a href="{% url 'home' %}" class="main-heading-text-colorful">Donder</a></h2>
+          {% block user_login %}
+          <!-- show user profile or subscribe, login buttons -->
+          {% endblock %}
+      </nav>
+        <!-- login modal -->
+        <div id="modal-login" style="color: black" class="modal-login">
+          <div class="modal-content card">
+              <h2 class ="modal-title-login mb-2 text-muted" style="text-align: center; font-size:0.9em; font-weight: 500;">Login to Donder</h2>
+              <div class="modal-body">
+                <div>
+                    {% for message in messages %}
+                    <p class="login-message" id="login-message">{{ message }}</p> <!-- messages for logging in -->
+                    {% endfor %}
+                </div>
+                <form action="" method="POST">
+                {% csrf_token %}
+                <div class="md-form mb-2">
+                    <input type="email" class="form-control validate white-text" name="login-email" placeholder="Email Address">
+                </div>
+                <div class="md-form pb-1">
+                    <input type="password" id="Form-pass555" class="form-control validate white-text" name="login-password" placeholder="Password">
+                </div>
+                <div class="row d-flex align-items-center mb-0">
+                  <div class="text-center mb-0 col-md-12">
+                    <button type="submit" class="button-login-request" style="width:100%">Log in</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mb-0 mt-1 pb-0">
+                    <p class="font-small white-text d-flex justify-content-center text-muted pb-0 mb-0" style="font-size: 0.47em;">Please contact <a href="mailto:support@donder.co.uk">&nbsp;support@donder.co.uk&nbsp;</a> if you have any issues</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- signup modal -->
+        <div id="modal-signup" style="color: black" class="modal-signup">
+          <div class="modal-content card">
+              <h2 class ="modal-title-signup mb-0 text-muted" style="text-align: center; font-size:0.9em; font-weight: 500;">Sign Up</h2>
+              <p class="text-muted mb-0" style="text-align: center; font-size: 0.55em;" >Join Donder's growing community</p>
+              <div class="modal-body mt-0">
+                <div>
+                    {% for message in messages %}
+                    <p class="signup-message" id="signup-message">{{ message }}</p> <!-- messages for logging in -->
+                    {% endfor %}
+                </div>
+                <form action="register" method="POST">
+                {% csrf_token %}
+                <div class="names-register" style="display:block;">
+                  <div class="text-input mb-2" style="float: left; width: 49%">
+                    <input type="text" class="form-control validate white-text" name="firstname" placeholder="First name">
+                  </div>
+                  <div class="text-input mb-2" style="float: right; width: 49%">
+                    <input type="text" class="form-control validate white-text" name="surname" placeholder="Surname">
+                  </div>
+                </div>
+                <div class="location-register" style="display:block;">
+                  <div class="text-input mb-2" style="float: left; width: 49%">
+                    <input type="text" class="form-control validate white-text" name="signup-city" placeholder="Town/City">
+                  </div>
+                  <div class="text-input mb-2" style="float: right; width: 49%">
+                    <input type="text" class="form-control validate white-text" name="signup-country" placeholder="Country">
+                  </div>
+                </div>
+                <div class="md-form mb-2">
+                    <input type="email" id="sign-up-email" class="form-control validate white-text" name="email" placeholder="Email Address">
+                </div>
+                <div class="md-form pb-2">
+                  <input type="password" id="Form-pass555-1" class="form-control validate white-text" name="password" placeholder="Password">
+                    <!-- <input type="password" id="Form-pass555-1" class="form-control validate white-text" name="password" placeholder="Password" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"> -->
+                </div>
+                <div class="md-form pb-1">
+                  <input type="password" id="Form-pass555-2" class="form-control validate white-text" name="password2" placeholder="Confirm Password">
+                </div>
+                <div class="row d-flex align-items-center mb-0">
+                  <div class="text-center mb-0 col-md-12">
+                    <button type="submit" class="button-login-request" style="width:100%">Sign Up</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mb-0 mt-1 pb-0">
+                    <p class="font-small white-text text-left text-muted pb-0 mb-0" style="font-size: 0.47em;">By clicking 'sign-up' you are agreeing to Donder's<a href='javascript:;' onclick="terms_and_conditions(event)">&nbsp;Terms and Conditions&nbsp;</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- terms and conditions modal -->
+        <div id="modal-terms-conditions" style="color: black" class="modal-signup">
+          <div class="modal-content card">
+              <h2 class ="modal-title-signup mb-3 text-muted" style="text-align: center; font-size:0.9em; font-weight: 500;">Terms & Conditions</h2>
+              <div style="width: 100%; height: 350px; overflow-y: scroll; font-size: 0.45em; padding-right: 10px; padding-left: 10px; margin-bottom: 10px">
+                <p> Welcome to Donder! These terms and conditions ("Terms") govern your use of our website, including all features and functionality available through the website, and any content, products, or services offered by us (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms.</p>         
+                <p style="font-size: 1.5em; font-weight:600; margin-bottom: 0; color: rgb(195, 195, 195)">Your Account</p>
+                <p>To use the Service, you must create an account and provide accurate and complete information about yourself. You are responsible for maintaining the confidentiality of your account information, including your username and password, and for all activities that occur under your account. You must immediately notify us of any unauthorized use of your account or any other breach of security. We will not be liable for any loss or damage arising from your failure to comply with this Section.</p>
+                <p style="font-size: 1.5em; font-weight:600; margin-bottom: 0; color: rgb(195, 195, 195)">User Content</p>
+                <p>You retain all ownership rights to any content you post or upload to the Service ("User Content"). By posting or uploading User Content, you grant us a non-exclusive, transferable, sublicensable, royalty-free, worldwide license to use, copy, modify, create derivative works based on, distribute, publicly display, publicly perform, and otherwise exploit in any manner such User Content in all formats and distribution channels now known or hereafter devised (including in connection with the Service and our business and on third-party sites and services), without further notice to or consent from you, and without the requirement of payment to you or any other person or entity.</p>
+                <p>You represent and warrant that you have all rights necessary to grant the licenses granted in this Section, and that your User Content does not violate the privacy rights, publicity rights, copyright rights, or other rights of any person or entity.</p>
+                <p style="font-size: 1.5em; font-weight:600; margin-bottom: 0; color: rgb(195, 195, 195)">Prohibited Conduct</p>
+                <p>You agree not to use the Service to:</p>
+                <ul style="padding-left: 20px">
+                  <li>Upload, post, email, or otherwise transmit any User Content that is unlawful, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, libellous, invasive of another's privacy, hateful, or racially, ethnically, or otherwise objectionable.</li>
+                  <li>Impersonate any person or entity or falsely state or otherwise misrepresent your affiliation with a person or entity.</li>
+                  <li>Engage in any activity that interferes with or disrupts the Service (or the servers and networks which are connected to the Service), including by transmitting any worms, viruses, spyware, malware, or other code of a destructive or disruptive nature.</li>
+                  <li>Harvest or collect information about users of the Service; or</li>
+                  <li>Violate any applicable laws or regulations.</li>
+                </ul>
+                <p style="font-size: 1.5em; font-weight:600; margin-bottom: 0; color: rgb(195, 195, 195)">Intellectual Property</p>
+                <p>All content, trademarks, service marks, logos, and other intellectual property displayed on or through the Service are the property of their respective owners. You may not modify, copy, reproduce, republish, upload, post, transmit, distribute, or otherwise use any of the content, trademarks, service marks, logos, or other intellectual property displayed on or through the Service without the prior written consent of the respective owner.</p>
+                <p style="font-size: 1.5em; font-weight:600; margin-bottom: 0; color: rgb(195, 195, 195)">Indemnification</p>
+                <p>You agree to indemnify, defend, and hold harmless us, our affiliates, officers, directors, employees, agents, and third-party service providers from and against any claims, actions, liabilities, damages, costs, or expenses (including reasonable attorneys' fees) arising out of or relating to your use of the Service, your User Content, or your violation of these Terms.</p>
+                <p style="font-size: 1.5em; font-weight:600; margin-bottom: 0; color: rgb(195, 195, 195)">Disclaimer of Warranties</p>
+                <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE"</p>
+              </div>
+              <div class="row d-flex align-items-center mb-0">
+                <div class="text-center mb-0 col-md-12">
+                  <button id="button-terms-conditions" class="button-login-request" style="width:100%">I understand</button>
+                </div>
+              </div>
+          </div>
+        </div>
+        <!-- The Subscribe Modal -->
+        <div id="modal-buy-opts" class="modal modal-buy" style="max-width: 380px !important; padding:0px; height: 700px !important;">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <h2 class ="modal-title" style="font-size: 1em !important; padding-top: 30px !important; padding-right: 20px !important; padding-left: 20px !important">Get the full donder experience.</h2>
+                <!-- <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+                <stripe-pricing-table pricing-table-id="prctbl_1Ms4FoCMR7u1SC0MaD511daP"
+                publishable-key="pk_test_51M34sPCMR7u1SC0M9bFtuuBIngpqcNwYQNUDXyE6ICOebYgvn0mAxUQAYaCyX2QQWbjSG9L9AF0jH5imy8JsOBT800FRJloUAN"
+                customer-email="{{ request.user.email }}"></stripe-pricing-table>
+                </stripe-pricing-table> -->
+                <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+                <stripe-pricing-table pricing-table-id="prctbl_1MzoelCMR7u1SC0MtTiU96Jr"
+                publishable-key="pk_live_51M34sPCMR7u1SC0MdrebuXfg61a9Do7VGxHQJFNFF28QMS2c4DUYGKUEteTEGuUUDIXR4BN9eL8q6Pvgr3dBRdYc003sVZaCMe"
+                customer-email="{{ user.email }}">
+                </stripe-pricing-table>
+            </div>
+        </div>
+
+
+
+        <!-- load some js -->
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+        <script src="{% static 'js/buy-opts-modal.js' %}"></script> <!-- subscribe and buy modal -->
+        <script src="{% static 'js/login-modal.js' %}"></script> <!-- subscribe and buy modal -->
+        <script src="{% static 'js/journal-entry-modal.js' %}"></script> <!-- add hike in user profile modal -->
+        <script src="{% static 'js/sign-up-modal.js' %}"></script> <!-- add sign-up modal -->
+        <script src="{% static 'js/buy-opts-modal-profile-nav.js' %}"></script> <!-- add sign-up modal -->
+
+
+
+        {% block content %}
+        <!-- Content Goes here -->
+        {% endblock content %}
+
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+

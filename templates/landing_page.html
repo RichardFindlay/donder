@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+{% load static %}
+{% load templatetaghelpers %}
+
+{% block title  %} Donder - Your Personal Hill Walking and Hiking Journal{% endblock  %}
+
+{% block metatag %} 
+<meta name="description" content="The ultimate hiking & hill walking tracker for bagging peaks all over the UK & Ireland. From Munros to Wainwrights, Donder has you covered. Sign Up Today!">
+{% endblock metatag %}
+
+{% block user_login %}
+{% if user_profile %}
+    {% if stripe_user_auth == False  %}
+        <button class="button-buy" id="button-buy-opts" style="display: flex; margin-left:auto"><a id="buy-opt-btn-txt" class="button-text-white">Subscribe</a></button>
+    {% else %}
+        <button class="button-login" id="logout-button" style="display: flex; margin-left:auto; float:right; margin-right:0px"><a id="logout-btn-txt" class="login-button-text-colorful" href="{% url 'create-customer-portal-session' %}" style="color: inherit; text-decoration: inherit;">Account</a></button>
+    {% endif %}
+    <a href="{% url 'profile_dashboard' first_name=first_name|lower last_name=last_name|lower id_user=user_profile.id_user %}">
+        <div class="img-profile-nav" style="background-image: url({{user_profile.profileimg.url}}); margin-left:10px"></div>
+    </a> 
+{% else %}
+    <button class="button-login ml-auto mr-1" id="login-button"><span id="login-btn-txt" class="login-button-text-colorful">Log in</span></button>
+    <button class="button-signup" id="sign-up-btn"><span id="buy-opt-btn-txt" class="button-text-white">Sign Up</span></button>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="hero-video-holder">
+    <video autoplay="" id="heroVideo" loop="" muted="">   
+        <source src="{% static 'video/hero-video.mp4' %}" type="video/mp4" alt="Ariel drone view of mountainous landscape with rolling clouds flowing over peak"/>
+    </video>
+    <img id="hero-image" src="{% static 'img/background-hero-image.png' %}" alt="Ariel drone view of mountainous landscape with rolling clouds flowing over peak">
+</div>
+<div class="wave-split">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M10.39,80.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+</div>
+<div class="wave-split not-blurry">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <defs>
+            <linearGradient id="MyGradient">
+              <stop offset="70.08%" stop-color="#07A3B2" />
+              <stop offset="81.96%" stop-color="#D9ECC7" />
+            </linearGradient>
+          </defs>
+        <path d="M10.39,80.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>     
+    </svg>
+</div> 
+
+<div class="wave-split blurry">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <defs>
+            <linearGradient id="MyGradient">
+              <stop offset="21.08%" stop-color="#07A3B2" />
+              <stop offset="81.96%" stop-color="#D9ECC7" />
+            </linearGradient>
+          </defs>
+        <path d="M10.39,80.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+</div>
+<div class="hero-container">
+    <div class="hero-text-container">
+      <h1 class="hero-text">Journal your hikes and share your <span style="color: white;">adventures.</span></h1>
+      <h2 class="hero-text-further-info">Bag peaks across the UK & Ireland, track your progress and see updates from Donder's growing community of hikers.</h2>
+      <div class="my-5" style="position: relative; z-index: 500;">
+        <div class="row" style="margin-top: -20px;">
+            <div class="col-xl-8 col-lg-8 pr-2">
+                <div class="form-floating">
+                    {% if user_profile %}
+                    {% else %}
+                    <input type="text" name="email" class="form-control" id="floatingTextInput1" placeholder="Enter email address..." style="border-radius: 8px; width: 100%">
+                    {% endif %}
+                </div>
+            </div>
+            {% if user_profile %}
+            {% else %}
+            <div class="join-btn d-grid pl-0 ml-0">
+                <button class="btn button-buy btn-hero-sign-up" id="sign-up-btn-hero" style="border-radius: 8px; height: 100%; background-color: #07a4b20f; color: white; border: solid 2px white; margin-left: 0px !important;">Join donder ⛰️</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    <div class="donder-hero-image">
+      <img src="{% static 'img/hero-image-with-gradient-bg-min.webp' %}" alt="Donder's profile view available to users after sign-up, shows example user with progress tracking, hiking journal and user leaderboard"/>
+    </div>
+</div>
+<div class="sort-by-buttons-container">
+<div id="search-and-grid"></div>
+
+<div class="sort-by-buttons">
+    <form id="searchForm" method="GET" action="{% url 'search_mountains' %}#search-and-grid">
+      {{ form.as_p }}
+    </form>
+    <!-- <select class="view-grid-map" onChange="window.location.href=this.value" style="width: 100px">
+      <option value="{% relative_url 'grid_view' 'grid_map' request.GET.urlencode %}#search-and-grid" {% if grid_map == 'grid_view' %} selected {% endif %}>Grid View</option>
+      <option value="{% relative_url 'map_view' 'grid_map' request.GET.urlencode %}#search-and-grid" {% if grid_map == 'map_view' %} selected {% endif %}>Map View</option>
+    </select> -->
+    <select class="order-by-opts sort-select" onChange="window.location.href=this.value" style="width: 100px">
+        <option value="{% relative_url 'ascents' 'order_by' request.GET.urlencode %}#search-and-grid" {% if order_by == 'ascents' %} selected {% endif %}>Ascents</option>
+        <option value="{% relative_url 'height' 'order_by' request.GET.urlencode %}#search-and-grid" {% if order_by == 'height' %} selected {% endif %}>Height</option>
+        <option value="{% relative_url 'name' 'order_by' request.GET.urlencode %}#search-and-grid" {% if order_by == 'name' %} selected {% endif %}>Name</option>
+    </select>
+{% if order_by == 'ascents' %}
+    <select class="sort-select" onChange="window.location.href=this.value" style="width: 100px">
+      <option value="{% relative_url 'all_time' 'time_period' request.GET.urlencode %}#search-and-grid" {% if time_period == 'all_time' %} selected {% endif %}>📅 All Time</option>
+      <option value="{% relative_url 'last_24hrs' 'time_period' request.GET.urlencode %}#search-and-grid" {% if time_period == 'last_24hrs' %} selected {% endif %}>Last 24hrs</option>
+      <option value="{% relative_url 'this_week' 'time_period' request.GET.urlencode %}#search-and-grid" {% if time_period == 'this_week' %} selected {% endif %}>This Week</option>
+      <option value="{% relative_url 'this_month' 'time_period' request.GET.urlencode %}#search-and-grid" {% if time_period == 'this_month' %} selected {% endif %}>This Month</option>
+      <option value="{% relative_url 'this_year' 'time_period' request.GET.urlencode %}#search-and-grid" {% if time_period == 'this_year' %} selected {% endif %}>This Year</option>
+  </select>
+{% endif %}
+</div>
+</div>
+
+
+<div class="default-filters-country">    
+    <a href="{% relative_url 'all' 'filter_by' request.GET.urlencode %}#search-and-grid"><button class="filter-grid-element">🇬🇧 UK</button></a>      
+    <a href="{% relative_url 'scotland' 'filter_by' request.GET.urlencode %}#search-and-grid"><button class="filter-grid-element">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</button></a>
+    <a href="{% relative_url 'england' 'filter_by' request.GET.urlencode %}#search-and-grid"><button class="filter-grid-element">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</button></a>
+    <a href="{% relative_url 'wales' 'filter_by' request.GET.urlencode %}#search-and-grid"><button class="filter-grid-element">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales</button></a>
+    <a href="{% relative_url 'ireland' 'filter_by' request.GET.urlencode %}#search-and-grid"><button class="filter-grid-element">🇮🇪 Ireland</button></a>
+    <button class="filter-grid-element" style="opacity: 30%; filter: saturate(0%);" data-toggle="tooltip" data-placement="top" title="More locations coming soon...">🌎 World</button> 
+    {% for category in cat_list %}
+        <a href="{% relative_url category 'class_type' request.GET.urlencode %}#search-and-grid"><button class="cat-filter munro-filter">{{ category }}</button></a>
+    {% endfor %}
+</div> 
+{% if grid_map == 'grid_view' %}
+
+
+
+
+
+<div class="grid-wrapper">
+    <div class="grid">
+        <div class="auto-grid infinite-container">
+            {% for mountain in mountainlist %}
+            <a class="card-block stretched-link infinite-item" href='javascript:;' id="tile-link-{{ mountain.name }}" onclick="site_info(event, '{{ mountain.name|escapejs }}', '{{ mountain.latitude }}', '{{ mountain.longitude }}');" style="display:flex ">
+                <div class="tile" id="site-tile" style="color:white"><img class="cover" style="opacity:1.0" src="{% static 'img/mountains_img_db/' %}{{ mountain.id }}_{{ mountain.name|replace_spaces }}.png" alt="Thumbnail image for {{ mountain.name }} showing contour plot for surrounding peak"/> 
+                <div class="location-txt">{{ mountain.country_abbr }}</div>
+                <div class="location-icon"><img src="{% static 'img/icons8-place-marker-48.png' %}" alt="Icon of location pin"/></div>
+                <div class="height-txt">{{ mountain.height_meters|floatformat:0 }}m</div>  
+                <div class="height-icon"><img src="{% static 'img/icons8-resize-vertical-30.png' %}" alt="Icon of vertical, double ended, arrow to symbolise height of mountain"/></div> 
+                <h3 class="tile-heading" style="z-index: 5000">{{ mountain.name }}</h3>
+                <div class="ascents-icon"><img src="{% static 'img/icons8-mountain-50_.png' %}" alt="Icon of mountain used to symbolise the number of ascents made by users"/></div>
+                <div class="ascents-txt"><p>
+                    {% if  mountain.ascent_count  == None %}
+                        0<br/>Ascents</p></div> 
+                    {% else %}
+                        {{ mountain.ascent_count }}<br/>Ascent{% if mountain.ascent_count == 1 %}{% else %}s{% endif %}</p></div> 
+                    {% endif %} 
+                <div class="categories-list">
+                    {% for class_ele in mountain.classification|split:" " %}
+                        {% if class_ele %}<button class="cat-filter categories-list-ele" style="width: fit-content">{{ class_ele }}</button>{% endif %}
+                    {% endfor %}
+                </div>  
+            </div></a>
+            <div id="details-modal-{{ mountain.name }}" class="modal insight-modal infinite-item" style="z-index:1000">
+              <a class="info-source" onclick="if (!this.hasAttribute('data-tooltip-shown')) {initializeTooltip(this); this.setAttribute('data-tooltip-shown', true); return false;} else {return true;}" data-toggle="tooltip" data-placement="top" title="Information from the Database of British and Irish Hills v17.5: hills-database" style="position: absolute; right:1; top:8px; transform: translateX(-25px);" href="http://www.hills-database.co.uk" target="_blank">
+                <img src="{% static 'img/icons8-information-64.png' %}" style="position: relative; width: 28px; height:28px;" alt="Information icon used to attribute data used for Donder to hills-database"/>
+              </a>
+                <button class="exit_button" onclick="hideModal('details-modal-{{ mountain.name|escapejs }}')" style="position: absolute; top: 0.5rem; right: 12px; background: none; border: none; color: #999999; font-size: 1.5rem; cursor: pointer;">X</button>
+                          <div class="insight-modal-content">
+                            <h3 class ="modal-title-journal mb-1 pb-0 mt-3" style="text-align: center; font-size:0.9em; font-weight: 500; display: block; line-height: 0.9em;">{{ mountain.name }}</h3>
+                            <hr style ="margin-top: 15px; margin-bottom: 10px ;"/>   
+                            <div class="information-div mt-0 mb-0 pt-0">
+                                <img src="{% static 'img/information-div/icons8-place-marker-50.png' %}" alt="Icon of location pin"/>
+                                <span class= "information-div-text text-muted info-region-text info-element" >{{ mountain.region }}</span>
+                                <img src="{% static 'img/information-div/icons8-mountain-50.png' %}" alt="Icon of mountain used to symbolise the number of ascents made by users"/>
+                                <span class= "information-div-text text-muted info-element">                    
+                                {% if  mountain.ascent_count  == None %}
+                                    0<br/>Ascents</span>
+                                {% else %}
+                                    {{ mountain.ascent_count }}<br/>Ascent{% if mountain.ascent_count == 1 %}{% else %}s{% endif %}</span>
+                                {% endif %} 
+                                <img src="{% static 'img/information-div/icons8-resize-vertical-50.png' %}" style="height:80%" alt="Icon of vertical, double ended, arrow to symbolise height of mountain"/>
+                                <span class= "information-div-text text-muted info-element">{{ mountain.height_meters }}<br/>Meters</span>
+                                {% for class_ele in mountain.classification|split:" " %}
+                                  <div class="information-div-ele info-element">
+                                    {% if class_ele %}<button class="cat-filter-journal-entry">{{ class_ele }}</button>{% endif %}
+                                  </div>
+                                {% endfor %}
+                            </div>  
+                            <!-- mapbox map -->
+                            <div id="map-{{ mountain.name }}" class="mapbox-map" style="position: relative; top: 0; bottom: 0; height: 300px; width: 100%; border-radius: 16px !important; margin-top:7px"></div>                              
+                            <!-- community posts -->
+                            <div class="card m-0 p-0"style="border:none; height: auto; overflow: auto; width:100%; float:left" >
+                                <div class="card-body community-posts-feed" style="color: black">
+                              <p class="text-muted mb-0" style="font-size: 0.6em; font-weight:500; text-align: center">User Activity</p>
+                              <hr/>
+                              {% for entry in user_activity|filter_for_current_mountain:mountain.name %}
+                                {% if entry.count != '' %}
+                                {% if stripe_user_auth %}
+                                    <a href='javascript:;' onclick="userActivity(event, '{{ entry.id }}')" style="text-decoration: none; color:black">
+                                {% else %}
+                                    <a href='javascript:;' onclick="no_community_feed_landing(event)" style="text-decoration: none; color:black">
+                                {% endif %}                                
+                                <div class="post" data-post-id="{{ entry.id }}" style="display: flex; align-items: center;">
+                                    <div class="img-profile-status" style="background-image: url({{entry.user|get_user_profile_image}}); width: 55px; height: 55px;"></div>
+                                    <div class="post-info" style="flex: 1; text-align:left; margin-left: 10px;">
+                                    <p style="font-size: 0.5em; margin-top:0; margin-bottom:0; font-weight: 400;">{{ entry.user|get_full_name_user }}</p>
+                                    <p style="font-size: 0.5em; margin-top:0; margin-bottom:0; font-weight: 400;">{{ entry.mountain_name }}</p>
+                                    <p class="text-muted" style="font-size: 0.4em; margin-top:0; margin-bottom:0;">Climb Date: {{ entry.date_climbed|date:'jS F, Y'|capfirst }}</p>
+                                    <p class="text-muted" style="font-size: 0.4em; margin-top:0; margin-bottom:0;">Posted: {{ entry.created_at|date:'jS F, Y'|capfirst }}</p>
+                                    </div>
+                                    <div class="post-time-lapsed m-0 p-0 text-muted" style="font-size: 0.48em; text-align:right; line-height:1em "><span id="time-since-last-update-{{ entry.id }}">{{ entry.date_climbed|time_since_last_update }}</span><br/>ago</div>
+                                </div>
+                                </a>
+                                <hr style="padding-left: 0; padding-right: 0;"/>
+                                <div class="myModal modal journal-entry-modal" id="myModal-{{ entry.id }}">
+                                    <div class="modal-content modal-content-edit-profile" id="myModalContent-{{ entry.id }}" style="color: black"></div>
+                                </div>
+                                {% else %}
+                                <p class="text-muted" style="color: black; text-align:center; vertical-align: center; font-size:0.55em">No recent Activity</p>
+                                {% endif %}
+                              {% endfor %}
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>  
+    </div>
+</div>
+<!-- pagination -->
+<div class="container" style="overflow-x: hidden;">
+  <div class="row" style="overflow-x: hidden;">
+    <div class="col-12">
+      {% if mountainlist.has_next %}
+        <a class="infinite-more-link" href="{% relative_url mountainlist.next_page_number 'page' request.GET.urlencode %}" aria-label="Infinite Scroll"></a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% else %}
+  <div id="jcommunity-map-overview" style="height:1200px; width: auto; border-radius: 16px; margin-top:30px; z-index:1000; margin-left:1em; margin-right: 1.5em"></div>
+{% endif %}
+
+<!-- Please subscribe to view other's posts modal -->
+<div id="modal-no-other-users-landing" style="color: black; z-index: 5000" class="modal-no-other-users-landing">
+  <div class="modal-content card">
+      <p class ="modal-title-login mb-2 text-muted" style="text-align: center; font-size:0.9em; font-weight: 500;">Please Subscribe</p>
+      <hr style="margin-top:5px; margin-bottom:0px"/>
+      <div class="modal-body">
+        <div class="md-form mb-2">
+            <p class="text-muted text-center" style="font-size:0.6em">Sign Up and Subscribe to get full access and see updates from other Donder users.</p>
+        </div>
+        <div class="row d-flex align-items-center mb-0">
+          {% if user_profile %}
+          <div class="text-center mb-0 col-md-12">
+            <button id="profile-buy-landing" type="submit" class="button-buy-profile button-login-request" style="width:100%">Subscribe</button>
+          </div>
+          {% else %}
+          <button class="button-signup-2 button-login-request" id="sign-up-btn-2">Sign Up</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  function hideModal(modalId) {
+    var modal_exit = document.getElementById(modalId);
+    modal_exit.style.display = "none";
+  }
+</script>
+
+<script>
+  function initializeTooltip(element) {
+    new bootstrap.Tooltip(element);
+  }
+
+  // Initialize tooltips for new elements added to the page
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      var newNodes = mutation.addedNodes;
+      if (newNodes.length > 0) {
+        $(newNodes).find('[data-toggle="tooltip"]').each(function() {
+          initializeTooltip(this);
+        });
+      }
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>
+
+<script src="{% static 'js/site-details-modal.js' %}"></script> 
+<script src="{% static 'js/no-other-user-feed-landing.js' %}"></script>
+<script src="{% static 'js/buy-opts-modal-profile-landing.js' %}"></script>
+<script src="{% static 'js/sign-up-modal.js' %}"></script>
+
+<!-- load grid lazy loading for images -->
+<script src="{% static 'js/lazy-load.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script>
+    var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        offset: 'bottom-in-view',
+        onBeforePageLoad: function () {
+        },
+        onAfterPageLoad: function() {
+        }
+    });
+</script>
+
+<script>
+    document.querySelector('video').playbackRate = 0.65;
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      var form = document.getElementById('searchForm');
+      var input = form.querySelector('input[type="text"]');
+      input.setAttribute("placeholder", "Search...");
+      input.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+              event.preventDefault(); // Prevent form submission
+              form.submit(); // Submit the form programmatically
+          }
+      });
+  });
+  </script>
+
+
+<!-- feed to allow ajax request to create modal from community updates -->
+<script>
+function userActivity(e, postId) {
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/get_community_modal/');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              var modal = document.getElementById('myModal-' + postId);
+              var modalContent = document.getElementById('myModalContent-' + postId);
+              modalContent.innerHTML = xhr.responseText;
+              modal.style.display = 'block';
+    
+              // Extract script tags from the response text
+              var parser = new DOMParser();
+              var responseDoc = parser.parseFromString(xhr.responseText, 'text/html');
+              var scripts = responseDoc.querySelectorAll('script');
+    
+              // Append extracted script tags to the head of your document
+              scripts.forEach(function(script) {
+                var newScript = document.createElement('script');
+                newScript.textContent = script.textContent;
+                document.head.appendChild(newScript);
+              });
+    
+              document.addEventListener('click', function(event) {
+                if (!event.target.closest(".myModal")) {
+                  modal.style.display = "none";
+                  document.getElementById('jcommunity-map-' + postId).innerHTML = "";
+                }
+              });
+    
+            } else {
+              // handle error
+            }
+          }
+        };
+        var data = 'post_id=' + postId;
+        xhr.send(data);
+ 
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+} 
+</script>
+
+<!-- <script type='text/javascript'>
+
+  // load map for current journal entry 
+  mapboxgl.accessToken = 'pk.eyJ1IjoicmZpbmRsYXkiLCJhIjoiY2t4N3NtMmlqMzYxbzJ2cDhybGN5a210eCJ9.EdLcO474UjPD1AZWZ5nWLw';
+    var map = new mapboxgl.Map({
+    container: 'jcommunity-map-overview', // container ID
+    // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+    style: 'mapbox://styles/rfindlay/clf8uclhd009s01mx7jaqmx5s', // style URL
+    center: [ "-3.436", "55.3781"], // starting position [lng, lat]
+    zoom: 5.5 // starting zoom
+  });
+
+  // Extract latitude and longitude for each mountain
+  var mountains = JSON.parse('{{ mountains_json|escapejs }}');
+
+  // create points
+  mountains.forEach(function(mountain) {
+    // Create a marker element
+    var el = document.createElement('div');
+    el.className = 'marker';
+    // Add marker to map
+    new mapboxgl.Marker(el)
+      .setLngLat([mountain.lon, mountain.lat])
+      .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML('<h3>' + mountain.name + '</h3><p>' + mountain.height_meters + '</p>'))
+      .addTo(map);
+  });
+
+
+</script> -->
+
+
+
+{%endblock%}
+
+
+
