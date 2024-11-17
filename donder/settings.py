@@ -39,13 +39,13 @@ else:
 
 # ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139']
 # ALLOWED_HOSTS = ['']
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139', 'www.donder.co.uk', 'donder.co.uk']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139', 'www.donder.co.uk', 'donder.co.uk', 'donder-production.up.railway.app']
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = False 
 CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = ['https://personal-website-production-31ce.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://donder-production.up.railway.app']
 
 # Application definition
 
