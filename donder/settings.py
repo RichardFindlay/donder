@@ -45,7 +45,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = False 
 CSRF_COOKIE_SECURE = False
-# CSRF_TRUSTED_ORIGINS = ['https://donder-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://donder-production.up.railway.app']
 
 # Application definition
 
@@ -133,7 +133,6 @@ WSGI_APPLICATION = 'donder.wsgi.application'
 
 POSTGRES_LOCALLY = False
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
-    print('HERE')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -230,6 +229,8 @@ if ENVIRONMENT == 'development':
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 else:
+
+    print('HERE_HERE')
     # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     S3_BUCKET_NAME = env('S3_BUCKET_NAME')
     STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
@@ -240,6 +241,8 @@ else:
     AWS_S3_CUSTOM_DOMAIN = f'{S3_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com' 
     STATIC_URL = env('STATIC_URL')
     AWS_S3_PUBLIC_URL_STATIC = env('AWS_S3_PUBLIC_URL_STATIC')
+
+    print(AWS_S3_PUBLIC_URL_STATIC)
 
     # for admin static files
     ADMIN_MEDIA_PREFIX = env('ADMIN_MEDIA_PREFIX')
