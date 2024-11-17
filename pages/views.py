@@ -72,6 +72,8 @@ country codes:
 'I' - Ireland = "IRE"
 '''
 
+print('HERE_HERE_HERE')
+
 # @login_required(login_url='home')
 def user_profile(request, *args, **kwargs):
     user_obj = User.objects.get(username=request.user.username)
