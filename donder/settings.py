@@ -39,12 +39,13 @@ else:
 
 # ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139']
 # ALLOWED_HOSTS = ['']
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139', 'www.donder.co.uk', 'donder.co.uk', 'donder-production.up.railway.app']
+# ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139', 'www.donder.co.uk', 'donder.co.uk', 'donder-production.up.railway.app']
+ALLOWED_HOSTS = ['donder-production.up.railway.app']
 
-SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE = False 
-CSRF_COOKIE_SECURE = False
+# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SESSION_COOKIE_SECURE = False 
+# CSRF_COOKIE_SECURE = False
 CSRF_TRUSTED_ORIGINS = ['https://donder-production.up.railway.app']
 
 # Application definition
@@ -229,8 +230,7 @@ if ENVIRONMENT == 'development':
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 else:
-
-    print('HERE_HERE')
+    
     # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     S3_BUCKET_NAME = env('S3_BUCKET_NAME')
     STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
@@ -252,8 +252,6 @@ else:
     MEDIA_URL = env('MEDIA_URL')
     AWS_S3_BUCKET_AUTH = False
     AWS_S3_MAX_AGE_SECONDS = 60 * 60 * 24 * 365  # 1 year.
-
-    print('HERE_HERE_END')
 
 
 
