@@ -221,7 +221,7 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'no-cache'  # or 'max-age=0'
 }
 
-if DEBUG:
+if DEBUG == True:
     STATIC_URL = 'static/'
     STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..', 'static'),
@@ -229,7 +229,7 @@ if DEBUG:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
+    # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     S3_BUCKET_NAME = env('S3_BUCKET_NAME')
     STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
     AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET_NAME
