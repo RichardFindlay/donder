@@ -252,6 +252,7 @@ else:
     # MEDIA_URL = env('MEDIA_URL')
     # AWS_S3_BUCKET_AUTH = False
     # AWS_S3_MAX_AGE_SECONDS = 60 * 60 * 24 * 365  # 1 year.
+    print('test')
 
 
 
