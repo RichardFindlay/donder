@@ -147,6 +147,9 @@ def landing_page(request, *args, **kwargs):
         filtered_journals = filter_journals.filter(date_climbed__range=[f"{todays_date.year}-01-01", todays_date.strftime('%Y-%m-%d')])
     elif time_period == "all_time":
         filtered_journals = filter_journals 
+
+
+    print('HERE_HERE_HERE_landing')
     
 
     # annotate each mountain with the ascent count for that mountain
@@ -233,8 +236,6 @@ def landing_page(request, *args, **kwargs):
         context['stripe_user_auth'] = stripe_user_auth
 
     context['form'] = form
-
-    print('HERE_HERE_HERE_landing')
 
     return render(request, "landing_page.html", context)
 
