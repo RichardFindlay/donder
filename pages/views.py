@@ -149,9 +149,6 @@ def landing_page(request, *args, **kwargs):
         filtered_journals = filter_journals 
 
 
-    print('HERE_HERE_HERE_landing')
-    
-
     # annotate each mountain with the ascent count for that mountain
     mountainlist = mountainlist.annotate(
         ascent_count=Count('journal_entries', filter=Q(journal_entries__in=filtered_journals))
@@ -179,6 +176,9 @@ def landing_page(request, *args, **kwargs):
     # store categories to make filter buttons
     context['cat_list'] = list(cat_list.values())
     context['cat_list'].sort()
+
+
+    print('HERE_HERE_HERE_landing')
 
     # check to see if there is a query
     query = request.GET.get('q')
