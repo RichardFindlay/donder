@@ -166,11 +166,12 @@ def landing_page(request, *args, **kwargs):
     print('HERE_HERE_HERE_landing')
 
     print(f'{request.path}')
+    print(len(mountainlist))
 
     # if there are no querys from sortting and filtering - revert back to orginal landing page 
-    # if len(mountainlist) == 0:
-    #     # redirect to the same view with default query string
-    #     return redirect(f'{request.path}')
+    if len(mountainlist) == 0:
+        # redirect to the same view with default query string
+        return redirect(f'{request.path}')
     
     context['filter_by'] = filter_by
     context['order_by'] = order_by
