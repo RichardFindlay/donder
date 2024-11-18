@@ -167,6 +167,8 @@ def landing_page(request, *args, **kwargs):
     if len(mountainlist) == 0:
         # redirect to the same view with default query string
         return redirect(f'{request.path}')
+    
+    print('HERE_HERE_HERE_landing')
 
     context['filter_by'] = filter_by
     context['order_by'] = order_by
@@ -176,9 +178,6 @@ def landing_page(request, *args, **kwargs):
     # store categories to make filter buttons
     context['cat_list'] = list(cat_list.values())
     context['cat_list'].sort()
-
-
-    print('HERE_HERE_HERE_landing')
 
     # check to see if there is a query
     query = request.GET.get('q')
