@@ -30,6 +30,10 @@ import logging
 from mountainsdir.forms import MountainSearchForm
 from environ import Env 
 from pathlib import Path
+from django.db import connection
+
+print('CONNECTION TEST:')
+print(connection.introspection.table_names())
 
 env = Env()
 env_path = Path('../donder/.env')  # Replace with your .env file's path
@@ -92,6 +96,7 @@ def landing_page(request, *args, **kwargs):
     context = {}
 
     print('HERE_HERE_HERE_landing_86')
+    print(mountain)
     print(mountain.objects.all())
     print(len(mountainlist))
 
