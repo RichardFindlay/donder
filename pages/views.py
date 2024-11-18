@@ -92,6 +92,7 @@ def landing_page(request, *args, **kwargs):
     context = {}
 
     print('HERE_HERE_HERE_landing_86')
+    print(mountain)
     print(len(mountainlist))
 
     if request.method == "POST":
