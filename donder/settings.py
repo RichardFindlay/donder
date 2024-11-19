@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+import dj_database_url
 from environ import Env 
 from pathlib import Path
 
@@ -134,15 +135,20 @@ WSGI_APPLICATION = 'donder.wsgi.application'
 
 POSTGRES_LOCALLY = False
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': env('PRD_DB_NAME'),
+    #         'USER': env('PRD_DB_USER'),
+    #         'PASSWORD': env('PRD_DB_PASS'),
+    #         'HOST': env('PRD_DB_HOST'),
+    #         'PORT': env('PRD_DB_PORT'),
+    #     }
+    # }
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': env('PRD_DB_NAME'),
-            'USER': env('PRD_DB_USER'),
-            'PASSWORD': env('PRD_DB_PASS'),
-            'HOST': env('PRD_DB_HOST'),
-            'PORT': env('PRD_DB_PORT'),
-        }
+        'default': dj_database_url.config(
+            default=env('DATABASE_URL'),
+        )
     }
 else:
     DATABASES = {
@@ -230,7 +236,7 @@ if ENVIRONMENT == 'development':
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 else:
-    
+
     # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     S3_BUCKET_NAME = env('S3_BUCKET_NAME')
     STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
