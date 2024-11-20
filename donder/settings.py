@@ -228,19 +228,21 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'no-cache'  # or 'max-age=0'
 }
 
-if ENVIRONMENT == 'development':
-    STATIC_URL = 'static/'
-    STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '..', 'static'),
-    ]
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
-else:
+# if ENVIRONMENT == 'development':
+#     STATIC_URL = 'static/'
+#     STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, '..', 'static'),
+#     ]
+#     MEDIA_URL = '/media/'
+#     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+# else:
 
-    STATIC_URL = 'static/'
-    STATICFILES_DIRS = [BASE_DIR / 'donderstatic']
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'donderstatic'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
     # # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     # S3_BUCKET_NAME = env('S3_BUCKET_NAME')
