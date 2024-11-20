@@ -7,8 +7,6 @@ bin/
 include/
 lib/
 share/
-media/
-static/
 node/
 __pycache__/
 .env
