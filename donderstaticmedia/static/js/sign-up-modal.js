@@ -33,7 +33,7 @@ if (document.getElementsByClassName('button-signup-2')[0] != undefined) {
 
 // id user is clicking on user activity 
 if (document.getElementsByClassName('button-signup-3')[0] != undefined) {
-  signup_btn_4.onclick = signupmodal 
+  signup_btn_4.onclick = signupmodal(public=true) 
 }
 
 //  if user clicks hero image email
@@ -45,7 +45,7 @@ if (document.getElementsByClassName('btn-hero-sign-up')[0] != undefined) {
 
 
 // When the user clicks the button, open the modal 
-function signupmodal(signup_event)  {
+function signupmodal(signup_event, public=false)  {
 
   // get value from input email
   var inputElement = document.getElementById("floatingTextInput1");
@@ -58,15 +58,18 @@ function signupmodal(signup_event)  {
   document.getElementById("sign-up-email").value = email;
 
   // ensure login modal is closed
+  if (public === false) {
   document.getElementById("modal-login").style.display = "none"
 
   // ensure sign-up / subsribe notification is closed
+  
   document.getElementById("modal-no-other-users-landing").style.display = "none"
 
   // ensure any site details modal is closed if open 
   document.querySelectorAll('[id^="details-modal-"]').forEach(function(el) {
     el.style.display = 'none'
   })
+  }
 
   signup_modal.style.display = "block";
   
