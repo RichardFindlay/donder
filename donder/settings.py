@@ -242,7 +242,7 @@ STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
     # # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
     # S3_BUCKET_NAME = env('S3_BUCKET_NAME')
