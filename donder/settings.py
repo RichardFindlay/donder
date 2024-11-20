@@ -237,27 +237,32 @@ if ENVIRONMENT == 'development':
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 else:
 
-    # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
-    S3_BUCKET_NAME = env('S3_BUCKET_NAME')
-    STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
-    AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET_NAME
-    AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME')
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = [BASE_DIR / 'donderstatic']
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'donderstatic'
 
-    # serve the static files directly from the specified s3 bucket
-    AWS_S3_CUSTOM_DOMAIN = f'{S3_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com' 
-    STATIC_URL = env('STATIC_URL')
-    AWS_S3_PUBLIC_URL_STATIC = env('AWS_S3_PUBLIC_URL_STATIC')
+    # # STATIC_ROOT = os.path.join(BASE_DIR, '..','static')
+    # S3_BUCKET_NAME = env('S3_BUCKET_NAME')
+    # STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+    # AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET_NAME
+    # AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME')
 
-    print(AWS_S3_PUBLIC_URL_STATIC)
+    # # serve the static files directly from the specified s3 bucket
+    # AWS_S3_CUSTOM_DOMAIN = f'{S3_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com' 
+    # STATIC_URL = env('STATIC_URL')
+    # AWS_S3_PUBLIC_URL_STATIC = env('AWS_S3_PUBLIC_URL_STATIC')
 
-    # for admin static files
-    ADMIN_MEDIA_PREFIX = env('ADMIN_MEDIA_PREFIX')
+    # print(AWS_S3_PUBLIC_URL_STATIC)
 
-    # MEDIA_URL = 'https://donderstaticmedia.s3.eu-west-1.amazonaws.com/media/'
-    DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
-    MEDIA_URL = env('MEDIA_URL')
-    AWS_S3_BUCKET_AUTH = False
-    AWS_S3_MAX_AGE_SECONDS = 60 * 60 * 24 * 365  # 1 year.
+    # # for admin static files
+    # ADMIN_MEDIA_PREFIX = env('ADMIN_MEDIA_PREFIX')
+
+    # # MEDIA_URL = 'https://donderstaticmedia.s3.eu-west-1.amazonaws.com/media/'
+    # DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage'
+    # MEDIA_URL = env('MEDIA_URL')
+    # AWS_S3_BUCKET_AUTH = False
+    # AWS_S3_MAX_AGE_SECONDS = 60 * 60 * 24 * 365  # 1 year.
 
 
 
