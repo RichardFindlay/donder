@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 if ENVIRONMENT == 'development':
     DEBUG = True
 else:
-    DEBUG = True
+    DEBUG = False
 
 # ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '127.0.0.2', '192.168.0.15', '172.31.13.139']
 # ALLOWED_HOSTS = ['']
